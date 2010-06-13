@@ -123,7 +123,6 @@ public class ScreenControllerMainMenu implements ScreenController {
 		System.out.println("enterGame");
 		//game.getContainer().setMouseGrabbed(true);
 		SlickUtils.hideMouse(game.getContainer(), true);
-		game.getContainer().setMinimumLogicUpdateInterval(80); //slow motion
 		game.enterState(2);
 	}
 

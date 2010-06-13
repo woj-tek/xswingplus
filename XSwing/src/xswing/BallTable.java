@@ -34,6 +34,7 @@ public class BallTable extends SObject implements Resetable, Cloneable, TileBase
 
 
 	private HashSet<Ball> ballSet = new HashSet<Ball>();
+	//private LinkedList<Ball> ballSet = new LinkedList<Ball>();
 	
 	private static final String NEW_LINE = System.getProperty("line.separator");
 
@@ -101,8 +102,8 @@ public class BallTable extends SObject implements Resetable, Cloneable, TileBase
 	public void setBall(int x, int y, Ball ball) {
 		if (ball != null) {
 			ball.setPos(getFieldPosOnScreen(x, y));
-			notifyListener(new BallEvent(this, ball, BallEventType.ADDED_TO_BALLTABLE, new Point(x, y)));
 			ballSet.add(ball);
+			notifyListener(new BallEvent(this, ball, BallEventType.ADDED_TO_BALLTABLE, new Point(x, y)));
 			if(y <= 8){
 				notifyListener(new BallEvent(this, ball, BallEventType.ADDED_TO_PLAY_FIELD, new Point(x, y)));
 			}

@@ -6,17 +6,14 @@ package xswing;
 
 import java.awt.event.*;
 import java.util.*;
-import lib.mylib.MyTimer;
 import lib.mylib.object.*;
 import xswing.events.*;
 import xswing.events.BallEvent.BallEventType;
 
 public class BallKiller implements Resetable, Updateable, BallEventListener, ActionListener {
 
-	private static final int WAITING_BEFORE_KILL = 320;
 	private Mechanics mechanics;
 	private HighScoreCounter score;
-	private MyTimer timer;
 	private List<BallDisbandCollection> disbandCollections = new LinkedList<BallDisbandCollection>();
 	private final BallTable ballTable;
 
@@ -24,13 +21,6 @@ public class BallKiller implements Resetable, Updateable, BallEventListener, Act
 		this.mechanics = mechanics;
 		this.score = score;
 		this.ballTable = ballTable;
-		timer = new MyTimer(WAITING_BEFORE_KILL, false, false) {
-
-			@Override
-			protected void timerAction() {
-			// killBalls();
-			}
-		};
 		reset();
 	}
 
@@ -41,7 +31,10 @@ public class BallKiller implements Resetable, Updateable, BallEventListener, Act
 
 	@Override
 	public void reset() {
-		timer.reset();
+		for (Resetable ballSet : disbandCollections) {
+			ballSet.reset();
+		}
+		disbandCollections.clear();
 	}
 
 	@Override

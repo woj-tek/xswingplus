@@ -46,11 +46,11 @@ public class XSwing extends StateBasedGame {
 			container.getHeight();
 			container.getWidth();
 			NiftyGameState mainMenu = new NiftyGameState(START_SCREEN);
-			// VOID: how to enable mouse image without grabbed mouse
-			try {
+			if(MyOptions.getBoolean(Args.useNativeMouseCursor)){
+				Log.info("Using native mouse cursor");
 				container.setMouseCursor(new Image("res/cursor.png"), 2, 2);
-			} catch (NoSuchMethodError e) {
-				Log.warn("No native Mouse cursor supported. Now using Nifty and grabbing mouse.");
+			}else {
+				Log.warn("Using Nifty mouse cursor and grabbing mouse.");
 				mainMenu.enableMouseImage(new Image("res/cursor.png"), 2, 2); // Nifty way
 				container.setMouseGrabbed(true);
 			}

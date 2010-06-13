@@ -9,23 +9,24 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.event.EventListenerList;
 import lib.mylib.MyTimer;
-import lib.mylib.object.Updateable;
+import lib.mylib.object.*;
 import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.pathfinding.*;
+import xswing.events.*;
 import xswing.events.BallEvent.BallEventType;
 
-public class BallDisbandCollection implements Updateable {
+public class BallDisbandCollection implements Updateable, BallEventListener, Resetable {
 
 	private final Ball initator;
 	private final Point initatorPos;
 	private List<BallWithDistance> balls = new LinkedList<BallWithDistance>();
-	private HashSet<Ball> ballsIncluded = new HashSet<Ball>();
+	//private HashSet<Ball> ballsIncluded = new HashSet<Ball>();
 	/** Time before killing starts */
 	private MyTimer timeBeforeKill;
 	/** Time steps of killing all balls with the same distance */
 	private MyTimer timeDuringKill;
-	private static final int WAITING_BEFORE_KILL = 800;
-	private static final int WAITING_BEFORE_NEXT_STEP = 225;
+	private static final int WAITING_BEFORE_KILL = 1200;
+	private static final int WAITING_BEFORE_NEXT_STEP = 220;
 	private final BallTable ballTable;
 	private PathFinder pathFinder = null;
 	private EventListenerList listenerList = new EventListenerList();
@@ -59,6 +60,7 @@ public class BallDisbandCollection implements Updateable {
 					killAllBallsWithSameDistance();
 				} else {
 					timeDuringKill.stop();
+					System.out.println("killed all balls");
 					notifyListener(new ActionEvent(this, 0, "Killed All Balls"));
 				}
 			}
@@ -79,11 +81,12 @@ public class BallDisbandCollection implements Updateable {
 		}
 		score.score(mechanics.calculateScore(balls2));
 		balls.get(0).getBall().fireBallEvent(BallEventType.BALL_EXPLODED);
+		Log.debug("Started killing " + balls.size() + " Balls: " + balls);
 		timeDuringKill.start();
 	}
 
 	private void killAllBallsWithSameDistance() {
-		System.out.println("killing()");
+		Log.debug("killAllBallsWithSameDistance");
 		int distance = balls.get(0).getDistance();
 		while (!balls.isEmpty() && balls.get(0).getDistance() == distance) {
 			// balls.get(0).getBall().fireBallEvent(BallEventType.BALL_EXPLODED);
@@ -97,9 +100,11 @@ public class BallDisbandCollection implements Updateable {
 			if (ball == null) {
 				throw new IllegalArgumentException("Ball can't be null");
 			}
+			Log.debug("Added Ball for Killing "+ball);
 			balls.add(new BallWithDistance(ball));
-			ballsIncluded.add(ball);
+			//ballsIncluded.add(ball);
 			timeBeforeKill.reset();
+			ball.addBallEventListener(this);
 		}
 	}
 
@@ -110,7 +115,7 @@ public class BallDisbandCollection implements Updateable {
 	}
 
 	boolean contains(Ball ball) {
-		return ballsIncluded.contains(ball);
+		return balls.contains(ball);
 	}
 
 	private class BallWithDistance implements Comparable<BallWithDistance> {
@@ -137,7 +142,7 @@ public class BallDisbandCollection implements Updateable {
 
 		@Override
 		public int compareTo(BallWithDistance ball) {
-			return distanceToInitator - ball.distanceToInitator;
+			return distanceToInitator - ball.distanceToInitator - 1;
 		}
 
 		public Ball getBall() {
@@ -164,5 +169,28 @@ public class BallDisbandCollection implements Updateable {
 	public void update(int delta) {
 		timeBeforeKill.update(delta);
 		timeDuringKill.update(delta);
+	}
+
+	@Override
+	public void ballEvent(BallEvent e) {
+		if (!killingStarted) {
+			switch (e.getBallEventType()) {
+			case BALL_CAUGHT_BY_EXPLOSION:
+				//remove(e.getBall());
+				System.out.println("BALL_CAUGHT_BY_EXPLOSION XXX");
+				break;
+			}
+		}
+	}
+
+	private void remove(Ball ball) {
+		balls.remove(ball);
+	}
+
+	@Override
+	public void reset() {
+		timeBeforeKill.stop();
+		timeDuringKill.stop();
+		balls.clear();
 	}
 }

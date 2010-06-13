@@ -84,6 +84,8 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 	private NiftyGameState highScoreState = null;
 
 	private ScreenControllerScore scoreScreenController;
+	
+	private final int startLevel = 2;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
@@ -128,7 +130,7 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		locationController.setLocationToObject(clock);
 		ballCounter = new BallCounter(ballFont);
 		locationController.setLocationToObject(ballCounter);
-		levelBall = new Level(4, balls1, ballFont);
+		levelBall = new Level(startLevel, balls1, ballFont);
 		locationController.setLocationToObject(levelBall);
 		ballCounter.setLevel(levelBall);
 		canon = new Cannon(cannons, new Sound[] { kran1, warning }, ballTable, ballCounter, effectCatalog);
@@ -325,7 +327,8 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 			notifyListener(new XSwingEvent(this, GameEventType.PRESSED_DOWN));
 		}
 		if (input.isKeyPressed(Input.KEY_J)) {
-			 ballFactory.addNewJoker();
+			 //ballFactory.addNewJoker();
+			System.out.println(ballTable);
 		}
 		if (input.isKeyPressed(Input.KEY_K)) {
 			if (ballDropSimulator == null) {

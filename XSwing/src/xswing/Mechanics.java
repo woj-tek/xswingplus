@@ -209,7 +209,9 @@ public class Mechanics {
 		// y).fireBallEvent(BallEventType.BALL_CAUGHT_BY_EXPLOSION);
 		// }
 		// }
-		shrincedBall.setWeight(weight + shrincedBall.getWeight());
+		ballTable.remove(shrincedBall);
+		shrincedBall.setWeight(weight);
+		ballTable.addBall(shrincedBall);
 		shrincedBall.fireBallEvent(BallEventType.BALL_CAUGHT_BY_SHRINC);
 	}
 
@@ -220,9 +222,12 @@ public class Mechanics {
 			weight += ball.getWeight();
 			ball.fireBallEvent(BallEventType.BALL_CAUGHT_BY_EXPLOSION);
 		}
-		weight += ballsT.get(0).getWeight();
-		ballsT.get(0).setWeight(weight);
-		ballsT.get(0).fireBallEvent(BallEventType.BALL_CAUGHT_BY_SHRINC);
+		Ball firstBall = ballsT.get(0);
+		weight += firstBall.getWeight();
+		ballTable.remove(firstBall);// + add: because i change the hash code of the ball
+		firstBall.setWeight(weight);
+		ballTable.addBall(firstBall);
+		firstBall.fireBallEvent(BallEventType.BALL_CAUGHT_BY_SHRINC);
 	}
 
 	public void performWeight(int[] weights) {
