@@ -4,10 +4,18 @@
  */
 package xswing;
 
-import lib.mylib.object.*;
-import lib.mylib.tools.*;
-import org.newdawn.slick.*;
+import lib.mylib.ScalableGameState;
+import lib.mylib.object.BasicGameState;
+import lib.mylib.object.Resetable;
+import lib.mylib.tools.ErrorReporter;
+import lib.mylib.tools.ServerRequest;
+
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+
 import xswing.LocationController.GameComponentLocation;
 import xswing.events.XSwingEvent;
 import xswing.events.XSwingEvent.GameEventType;
@@ -16,8 +24,8 @@ import xswing.start.XSwing;
 public class GamePanel extends BasicGameState implements Resetable {
 
 	private MainGame singlePlayer, multiPlayer1, multiPlayer2;
-	private Background background;
 	private boolean multiplayer = false;
+//	private ScalableGameState scaledGame;
 
 	private boolean coopertive = false; // TODO: implement meue entry for coopertive mode
 	private final int scoreStep = 1000;
@@ -36,13 +44,12 @@ public class GamePanel extends BasicGameState implements Resetable {
 		statistics = new LocalXSwingStatistics();
 
 		// make sure all graphics are loaded
-		background = new Background(true);
-		background = new Background(false);
-		singlePlayer = new MainGame(GameComponentLocation.CENTER);
+		singlePlayer = new MainGame();
+//		scaledGame = new ScalableGameState(singlePlayer,container.getWidth(),container.getHeight());
 
-		multiPlayer1 = new MainGame(GameComponentLocation.LEFT);
-			singlePlayer.init(container, game);
-			multiPlayer1.init(container, game);
+		multiPlayer1 = new MainGame();
+		singlePlayer.init(container, game);
+		multiPlayer1.init(container, game);
 		}catch (Exception e) {
 			new ErrorReporter(e, new ServerRequest(XSwing.POST_BUG_URL));
 			e.printStackTrace();
@@ -52,7 +59,6 @@ public class GamePanel extends BasicGameState implements Resetable {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		background.render(g);
 
 		if (!multiplayer) {
 			singlePlayer.render(container, game, g);
@@ -98,20 +104,20 @@ public class GamePanel extends BasicGameState implements Resetable {
 
 	private void initGame(boolean multiplayer, GameContainer container, StateBasedGame game)
 			throws SlickException {
-		background = new Background(multiplayer);
 		if (!multiplayer) {
-			singlePlayer = new MainGame(GameComponentLocation.CENTER);
+			singlePlayer = new MainGame();//GameComponentLocation.CENTER
+//			singlePlayer = new ScalableGameState(singlePlayer,container.getWidth(),container.getHeight());
 			singlePlayer.init(container, game);
 			singlePlayer.addXSwingListener(gameRecorder);
 			singlePlayer.addXSwingListener(statistics);
 			gameRecorder.play();
 			singlePlayer.enter(container, game);
 		} else {
-			multiPlayer1 = new MainGame(GameComponentLocation.LEFT);
+			multiPlayer1 = new MainGame();//GameComponentLocation.LEFT
 			multiPlayer1.setKeys(Input.KEY_A, Input.KEY_D, Input.KEY_S);
 			multiPlayer1.init(container, game);
 			multiPlayer1.enter(container, game);
-			multiPlayer2 = new MainGame(GameComponentLocation.RIGHT);
+			multiPlayer2 = new MainGame();//GameComponentLocation.RIGHT
 			multiPlayer2.init(container, game);
 			multiPlayer2.enter(container, game);
 		}

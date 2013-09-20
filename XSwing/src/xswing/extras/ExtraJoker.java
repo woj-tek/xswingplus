@@ -7,6 +7,7 @@ package xswing.extras;
 import static lib.mylib.options.Paths.RES_DIR;
 import org.newdawn.slick.*;
 import xswing.*;
+import xswing.ball.*;
 
 public class ExtraJoker extends Extra {
 

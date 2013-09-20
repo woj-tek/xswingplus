@@ -6,6 +6,7 @@ package xswing.ai;
 
 import lib.mylib.object.Updateable;
 import xswing.*;
+import xswing.ball.BallTable;
 
 public class CopyOfAIInterface implements Updateable {
 

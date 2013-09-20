@@ -10,6 +10,7 @@ import lib.mylib.tools.*;
 import lib.mylib.util.*;
 import lib.mylib.version.UpdateMessage;
 import org.newdawn.slick.util.Log;
+import static xswing.properties.XSGameConfigs.getConfig;
 
 /**
  * Starts XSwing Plus with an updatecheck and an option dialog on start
@@ -31,7 +32,9 @@ public class XSwingWithOptions {
 		}
 		MyOptions.setBoolean(Args.firstStart, false);
 
+		
 		new UpdateMessage(starter, "http://xswing.net/version.php", "http://xswing.net");
+		
 	}
 
 	/**
@@ -42,6 +45,7 @@ public class XSwingWithOptions {
 			Log.info("No online connection available!");
 			new OnlineCheckWindow();
 		}
+		
 	}
 
 	public static void main(String[] args) {

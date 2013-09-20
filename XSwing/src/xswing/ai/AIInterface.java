@@ -7,6 +7,7 @@ package xswing.ai;
 import java.util.LinkedList;
 import lib.mylib.object.Updateable;
 import xswing.*;
+import xswing.ball.*;
 import xswing.events.*;
 import xswing.events.XSwingEvent.GameEventType;
 

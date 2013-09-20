@@ -4,9 +4,10 @@
  */
 package xswing.events;
 
-import java.awt.Point;
+
 import java.util.EventObject;
-import xswing.Ball;
+import lib.mylib.math.Point;
+import xswing.ball.Ball;
 
 public class BallEvent extends EventObject {
 

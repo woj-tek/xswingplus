@@ -8,13 +8,14 @@ import static lib.mylib.options.Paths.RES_DIR;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import lib.mylib.options.Paths;
 import lib.mylib.options.DefaultArgs.Args;
 import lib.mylib.swing.SwingUtils;
 import lib.mylib.util.*;
-import org.newdawn.slick.util.ResourceLoader;
+import org.newdawn.slick.util.*;
 
 public class OptionStarter extends JFrame implements ActionListener {
 
@@ -28,7 +29,6 @@ public class OptionStarter extends JFrame implements ActionListener {
 	private JCheckBox showOptionsOnStart, checkForUpdatesOnStart;
 	private Class<?> gameToStart;
 	private String[] resolutions = new String[] { "1024 x 768" };
-	public static boolean haveToshowOptionStarter;
 	private String[] args = new String[] { "" };
 
 	public OptionStarter() {
@@ -37,11 +37,13 @@ public class OptionStarter extends JFrame implements ActionListener {
 
 	public OptionStarter(Class<?> gameToStart, String[] args) {
 		this.gameToStart = gameToStart;
+		Log.info("OptionStarter Args: "+ Arrays.toString(args));
 		MyPropertys.setFile(gameToStart);
 		loadSavedOptions();
+		this.args=args;
 		MyPropertys.setStrings(args);
 
-		if (haveToshowOptionStarter || showOptionPanelOnStart) {
+		if (showOptionPanelOnStart) {
 			initCompoments();
 			setVisible(true);
 		} else {
@@ -255,7 +257,7 @@ public class OptionStarter extends JFrame implements ActionListener {
 	private void loadSavedOptions() {
 		showOptionPanelOnStart = MyOptions.getBoolean(Args.showOptionPanelOnStart, true);
 		isGermanSetAsDefaultlanguage = MyOptions.getBoolean(Args.isGermanSetAsDefaultLanguage, false);
-		startGameInFullscreen = MyOptions.getBoolean(Args.startGameInFullscreen, false);
+		startGameInFullscreen = MyOptions.getBoolean(Args.fullscreen, false);
 		checkForUpdates = MyOptions.getBoolean(Args.checkForUpdates, true);
 	}
 
@@ -274,9 +276,9 @@ public class OptionStarter extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(showOptionsOnStart)) {
 			MyPropertys.setString("showOptionPanelOnStart", showOptionsOnStart.isSelected() + "");
 		} else if (e.getSource().equals(selectFullscreen)) {
-			MyOptions.setString(Args.startGameInFullscreen, "true");
+			MyOptions.setString(Args.fullscreen, "true");
 		} else if (e.getSource().equals(selectWindow)) {
-			MyOptions.setString(Args.startGameInFullscreen, "false");
+			MyOptions.setString(Args.fullscreen, "false");
 		} else if (e.getSource().equals(checkForUpdatesOnStart)) {
 			System.out.println(checkForUpdatesOnStart.isSelected());
 			MyOptions.setBoolean(Args.checkForUpdates, checkForUpdatesOnStart.isSelected());

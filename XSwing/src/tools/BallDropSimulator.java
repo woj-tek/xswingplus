@@ -8,8 +8,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import lib.mylib.swing.SwingUtils;
-import xswing.*;
 import xswing.ai.Simulator;
+import xswing.ball.*;
 
 public class BallDropSimulator extends JFrame implements ActionListener {
 

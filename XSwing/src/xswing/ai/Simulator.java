@@ -4,9 +4,10 @@
  */
 package xswing.ai;
 
-import java.awt.Point;
+
 import java.util.List;
-import xswing.*;
+import lib.mylib.math.Point;
+import xswing.ball.*;
 
 public class Simulator {
 
@@ -30,11 +31,11 @@ public class Simulator {
 
 		Mechanics mechanics = new Mechanics(ballTableCopy);
 		// mechanics.checkOfFive();
-		mechanics.checkOfThree();
+		//mechanics.checkOfThree();
 		List<Ball> ballsToKill = null;
-		if (mechanics.getWaitingForKill() != null) {
+		if (true/*mechanics.getWaitingForKill() != null*/) {
 			// System.out.println("found three connected balls!");
-			ballsToKill = mechanics.getConnectedBalls(mechanics.getWaitingForKill());
+		//	ballsToKill = mechanics.getConnectedBalls(mechanics.getWaitingForKill());
 			score += mechanics.calculateScore(ballsToKill);
 			for (Ball ball : ballsToKill) {
 				Point position = ballTableCopy.getField(ball);

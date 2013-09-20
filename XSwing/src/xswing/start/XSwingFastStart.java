@@ -58,6 +58,7 @@ public class XSwingFastStart extends StateBasedGame {
 		LocationController.setMultiplayer(false);
 		addState(new LoadingScreen(0));
 		addState(new GamePanel(1));
+		LocationController.setMultiplayer(false);
 	}
 
 }
